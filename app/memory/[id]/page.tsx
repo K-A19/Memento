@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -24,6 +24,9 @@ export default function MemoryPage() {
 
   const [memory, setMemory] = useState<Memory | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     async function fetchMemory() {
@@ -45,6 +48,50 @@ export default function MemoryPage() {
       fetchMemory();
     }
   }, [id]);
+
+  /*
+   * Automatically start the curator narration
+   * once the memory has loaded.
+   */
+  useEffect(() => {
+    if (!memory?.audio_url || !audioRef.current) return;
+
+    const audio = audioRef.current;
+
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch(() => {
+        // Browser blocked autoplay.
+        // User can start it manually with the button.
+        setIsPlaying(false);
+      });
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, [memory?.audio_url]);
+
+  const toggleAudio = async () => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    if (audio.paused) {
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error("Could not play audio:", error);
+      }
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -74,7 +121,7 @@ export default function MemoryPage() {
         year: "numeric",
         month: "long",
         day: "numeric",
-        }).format(new Date(`${memory.memory_date}T00:00:00Z`))
+      }).format(new Date(`${memory.memory_date}T00:00:00Z`))
     : "Date unknown";
 
   return (
@@ -167,22 +214,48 @@ export default function MemoryPage() {
               "The curator has not written a note for this memory yet."}
           </p>
 
-          <div className="memory-audio">
 
-            <button
-              type="button"
-              disabled
-              className="audio-button"
-            >
-              <span>▶</span>
-              Listen to the curator
-            </button>
+          {/* AUDIO */}
 
-            <p>
-              Curator narration coming soon.
-            </p>
+          {memory.audio_url && (
+            <div className="memory-audio">
 
-          </div>
+              <audio
+                ref={audioRef}
+                src={memory.audio_url}
+                preload="auto"
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnded={() => setIsPlaying(false)}
+              />
+
+              <button
+                type="button"
+                onClick={toggleAudio}
+                className="audio-button"
+                aria-label={
+                  isPlaying
+                    ? "Curator speaking"
+                    : "Curator paused"
+                }
+              >
+                <span>
+                  {isPlaying ? "Ⅱ" : "▶"}
+                </span>
+
+                {isPlaying
+                  ? "Pause narration"
+                  : "Play narration"}
+              </button>
+
+              <p>
+                {isPlaying
+                  ? "The curator is speaking..."
+                  : "Listen to the curator's narration."}
+              </p>
+
+            </div>
+          )}
 
         </div>
 
@@ -212,7 +285,6 @@ export default function MemoryPage() {
           </div>
 
         )}
-
 
       </section>
 
