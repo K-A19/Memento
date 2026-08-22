@@ -1,3 +1,7 @@
+/* =========================================================
+   MEMENTO — MUSEUM
+========================================================= */
+
 .museum {
   min-height: 100vh;
   background: var(--black);
@@ -5,7 +9,10 @@
   padding: 28px 5vw 80px;
 }
 
-/* HEADER */
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .museum-header {
   display: flex;
@@ -20,18 +27,18 @@
   letter-spacing: 0.28em;
 }
 
+.museum-header-right {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
 .museum-meta {
   display: flex;
   gap: 25px;
   font-size: 8px;
   letter-spacing: 0.18em;
   color: var(--muted);
-}
-
-.museum-header-right {
-  display: flex;
-  align-items: center;
-  gap: 35px;
 }
 
 .preserve-link {
@@ -41,6 +48,7 @@
   font-size: 8px;
   letter-spacing: 0.08em;
   color: var(--white);
+  text-decoration: none;
   transition: all 0.25s ease;
 }
 
@@ -50,7 +58,9 @@
 }
 
 
-/* INTRO */
+/* =========================================================
+   INTRO
+========================================================= */
 
 .museum-intro {
   max-width: 950px;
@@ -79,9 +89,11 @@
 
 .museum-description {
   margin-top: 30px;
+  max-width: 550px;
   font-family: var(--font-cormorant), serif;
   font-style: italic;
   font-size: 20px;
+  line-height: 1.35;
   color: var(--muted);
 }
 
@@ -110,12 +122,14 @@
 }
 
 
-/* SECTIONS */
+/* =========================================================
+   SECTIONS
+========================================================= */
 
 .exhibitions,
 .featured {
   max-width: 950px;
-  margin: 0 auto 70px;
+  margin: 0 auto 90px;
 }
 
 .section-heading {
@@ -140,7 +154,9 @@
 }
 
 
-/* EXHIBITIONS */
+/* =========================================================
+   EXHIBITIONS
+========================================================= */
 
 .exhibition-list {
   border-bottom: 1px solid var(--border);
@@ -148,18 +164,27 @@
 
 .exhibition {
   width: 100%;
+
   display: grid;
   grid-template-columns: 55px 1fr 40px 25px;
   align-items: center;
   gap: 15px;
-  padding: 26px 0;
+
+  min-height: 125px;
+  padding: 22px 0;
+
   background: transparent;
   color: var(--white);
   border: none;
   border-bottom: 1px solid var(--border);
+
   text-align: left;
   cursor: pointer;
-  transition: all 0.3s ease;
+  text-decoration: none;
+
+  transition:
+    padding 0.35s ease,
+    background-color 0.35s ease;
 }
 
 .exhibition:hover {
@@ -169,48 +194,78 @@
 }
 
 .exhibition-number {
-  font-size: 9px;
+  align-self: start;
+  padding-top: 5px;
+
+  font-size: 8px;
   color: var(--muted);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+
+  transition: color 0.3s ease;
+}
+
+.exhibition:hover .exhibition-number {
+  color: var(--white);
 }
 
 .exhibition-info h3 {
   font-family: var(--font-cormorant), serif;
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 400;
-  margin: 0 0 3px;
+  line-height: 1;
+  margin: 0 0 6px;
+
+  transition: transform 0.35s ease;
+}
+
+.exhibition:hover .exhibition-info h3 {
+  transform: translateX(4px);
 }
 
 .exhibition-info p {
   margin: 0;
-  font-size: 10px;
+
+  font-family: var(--font-cormorant), serif;
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.25;
+
   color: var(--muted);
 }
 
 .exhibition-count {
-  font-family: var(--font-cormorant), serif;
-  font-size: 22px;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.15em;
   color: var(--muted);
 }
 
 .exhibition-arrow {
   font-size: 16px;
   color: var(--muted);
-  transition: transform 0.3s ease;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .exhibition:hover .exhibition-arrow {
-  transform: translateX(5px);
+  transform: translateX(6px);
+  color: var(--white);
 }
 
 
-/* FEATURED */
+/* =========================================================
+   FEATURED MEMORY
+========================================================= */
 
 .featured-memory {
   display: grid;
   grid-template-columns: 1.05fr 1fr;
+
   max-width: 800px;
   margin: 0 auto;
+
   align-items: stretch;
 }
 
@@ -224,15 +279,24 @@
   height: 100%;
   object-fit: cover;
   display: block;
+
+  transition: transform 0.7s ease;
+}
+
+.featured-memory:hover .featured-image {
+  transform: scale(1.02);
 }
 
 .featured-info {
   background: var(--paper);
   color: var(--black);
+
   padding: 38px 35px;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   min-height: 360px;
 }
 
@@ -247,6 +311,7 @@
   font-size: 42px;
   line-height: 0.9;
   font-weight: 400;
+
   margin: 14px 0 7px;
 }
 
@@ -259,18 +324,28 @@
   font-family: var(--font-cormorant), serif;
   font-size: 15px;
   line-height: 1.4;
+
   margin-top: 24px;
 }
 
 .view-memory {
   align-self: flex-start;
+
   margin-top: 20px;
   padding: 9px 15px;
+
   border: 1px solid #aaa397;
   background: transparent;
   border-radius: 999px;
+
   cursor: pointer;
+
+  font-family: inherit;
   font-size: 9px;
+
+  text-decoration: none;
+  color: var(--black);
+
   transition: all 0.3s ease;
 }
 
@@ -280,97 +355,27 @@
 }
 
 
-/* LOADING */
+/* =========================================================
+   LOADING
+========================================================= */
 
 .museum-loading {
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   color: var(--muted);
+
   font-family: var(--font-cormorant), serif;
   font-size: 20px;
 }
 
 
-/* MOBILE */
-
-@media (max-width: 700px) {
-  .museum {
-    padding: 22px 20px 60px;
-  }
-
-  .museum-meta {
-    display: none;
-  }
-
-  .museum-intro {
-    margin: 70px auto 80px;
-  }
-
-  .museum-intro h1 {
-    font-size: 60px;
-  }
-
-  .museum-stats {
-    gap: 30px;
-  }
-
-  .exhibitions,
-  .featured {
-    margin-bottom: 90px;
-  }
-
-  .exhibition {
-    grid-template-columns: 30px 1fr 30px;
-    gap: 8px;
-    padding: 22px 0;
-  }
-
-  .exhibition-info h3 {
-    font-size: 27px;
-  }
-
-  .exhibition-info p {
-    line-height: 1.4;
-  }
-
-  .exhibition-arrow {
-    display: none;
-  }
-
-  .featured-memory {
-    grid-template-columns: 1fr;
-  }
-
-  .featured-image {
-    min-height: 300px;
-  }
-
-  .featured-info {
-    padding: 38px 28px;
-  }
-
-  .featured-info h2 {
-    font-size: 42px;
-  }
-
-  .museum-header-right {
-    gap: 12px;
-  }
-
-  .museum-meta {
-    display: none;
-  }
-
-  .preserve-link {
-    font-size: 7px;
-    padding: 8px 11px;
-  }
-
-}
-
-/* EXHIBITION PAGE */
+/* =========================================================
+   EXHIBITION PAGE
+========================================================= */
 
 .exhibition-page {
   min-height: 100vh;
@@ -383,10 +388,15 @@
 
 .back-link {
   display: inline-block;
+
   font-size: 9px;
   letter-spacing: 0.15em;
   color: var(--muted);
+
   margin-bottom: 65px;
+
+  text-decoration: none;
+
   transition: color 0.2s ease;
 }
 
@@ -399,53 +409,68 @@
   font-size: clamp(55px, 8vw, 100px);
   font-weight: 400;
   line-height: 0.9;
+
   margin: 12px 0 20px;
 }
 
 .exhibition-intro > p:not(.museum-eyebrow) {
   max-width: 500px;
+
   font-family: var(--font-cormorant), serif;
   font-size: 20px;
   font-style: italic;
+  line-height: 1.35;
+
   color: var(--muted);
 }
 
 .exhibition-total {
   display: block;
+
   margin-top: 35px;
+
   font-size: 9px;
   letter-spacing: 0.18em;
   color: var(--muted);
 }
 
 
-/* MEMORY GRID */
+/* =========================================================
+   MEMORY GRID
+========================================================= */
 
 .memory-grid {
   max-width: 950px;
   margin: 0 auto 120px;
+
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
   gap: 60px 35px;
 }
 
 .memory-card {
   color: var(--white);
   display: block;
+  text-decoration: none;
 }
 
 .memory-card-image {
   width: 100%;
   aspect-ratio: 4 / 3;
+
   overflow: hidden;
+
   background: var(--black-soft);
 }
 
 .memory-card-image img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   display: block;
+
   transition: transform 0.6s ease;
 }
 
@@ -467,25 +492,34 @@
   font-family: var(--font-cormorant), serif;
   font-size: 32px;
   font-weight: 400;
+
   margin: 8px 0 5px;
 }
 
 .memory-card-info p {
   font-size: 10px;
   line-height: 1.5;
+
   color: var(--muted);
+
   margin: 0;
 }
 
 
-/* EMPTY ROOM */
+/* =========================================================
+   EMPTY ROOM
+========================================================= */
 
 .empty-exhibition {
   max-width: 950px;
+
   margin: 100px auto;
+
   padding: 70px 0;
+
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+
   text-align: center;
 }
 
@@ -498,15 +532,116 @@
 
 .empty-exhibition a {
   display: inline-block;
+
   margin-top: 15px;
+
   font-size: 10px;
   letter-spacing: 0.12em;
 }
 
 
-/* MOBILE */
+/* =========================================================
+   MOBILE — MUSEUM
+========================================================= */
 
 @media (max-width: 700px) {
+
+  .museum {
+    padding: 22px 20px 60px;
+  }
+
+  .museum-header {
+    padding-bottom: 18px;
+  }
+
+  .museum-meta {
+    display: none;
+  }
+
+  .museum-header-right {
+    gap: 12px;
+  }
+
+  .preserve-link {
+    font-size: 7px;
+    padding: 8px 11px;
+  }
+
+  .museum-intro {
+    margin: 70px auto 80px;
+  }
+
+  .museum-intro h1 {
+    font-size: 60px;
+  }
+
+  .museum-description {
+    font-size: 18px;
+  }
+
+  .museum-stats {
+    gap: 30px;
+    margin-top: 45px;
+  }
+
+  .exhibitions,
+  .featured {
+    margin-bottom: 90px;
+  }
+
+  .exhibition {
+    grid-template-columns: 30px 1fr 30px;
+    gap: 8px;
+    min-height: 115px;
+    padding: 22px 0;
+  }
+
+  .exhibition-info h3 {
+    font-size: 30px;
+  }
+
+  .exhibition-info p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .exhibition-count {
+    display: none;
+  }
+
+  .exhibition-arrow {
+    display: block;
+    font-size: 14px;
+  }
+
+  .exhibition:hover {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .featured-memory {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-image-wrapper {
+    min-height: 0;
+  }
+
+  .featured-image {
+    min-height: 300px;
+  }
+
+  .featured-info {
+    padding: 38px 28px;
+    min-height: 0;
+  }
+
+  .featured-info h2 {
+    font-size: 42px;
+  }
+
+
+  /* Exhibition page */
 
   .exhibition-intro {
     margin: 55px auto 60px;
@@ -519,6 +654,40 @@
   .memory-grid {
     grid-template-columns: 1fr;
     gap: 50px;
+  }
+
+  .empty-exhibition {
+    margin: 70px auto;
+    padding: 50px 20px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .museum-intro h1 {
+    font-size: 52px;
+  }
+
+  .museum-stats {
+    gap: 22px;
+  }
+
+  .museum-stats strong {
+    font-size: 24px;
+  }
+
+  .exhibition-info h3 {
+    font-size: 27px;
+  }
+
+  .featured-info h2 {
+    font-size: 36px;
   }
 
 }
