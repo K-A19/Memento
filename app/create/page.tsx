@@ -12,118 +12,139 @@ export default function CreatePage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [processingStep, setProcessingStep] = useState(0);
+  const [processing, setProcessing] = useState(false);
+  const [completedMemoryId, setCompletedMemoryId] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     if (!image || !title) {
-        setMessage("Please add a photo and title.");
-        return;
+      setMessage("Please add a photo and title.");
+      return;
     }
 
     setLoading(true);
     setMessage("");
-    
-    setProcessingStep(1);
-
-    const stepTimer1 = setTimeout(() => {
-      setProcessingStep(2);
-    }, 900);
-
-    const stepTimer2 = setTimeout(() => {
-      setProcessingStep(3);
-    }, 1800);
-
-    const stepTimer3 = setTimeout(() => {
-      setProcessingStep(4);
-    }, 2700);
 
     try {
-        // 1. Upload image
-        const fileExtension = image.name.split(".").pop();
-        const fileName = `${crypto.randomUUID()}.${fileExtension}`;
+      /* --------------------------------
+        1. Upload image
+      -------------------------------- */
 
-        const { error: uploadError } = await supabase.storage
+      const fileExtension = image.name.split(".").pop();
+      const fileName = `${crypto.randomUUID()}.${fileExtension}`;
+
+      const { error: uploadError } = await supabase.storage
         .from("memories")
         .upload(fileName, image);
 
-        if (uploadError) {
+      if (uploadError) {
         throw uploadError;
-        }
+      }
 
-
-        // 2. Get public image URL
-        const {
+      const {
         data: { publicUrl },
-        } = supabase.storage
+      } = supabase.storage
         .from("memories")
         .getPublicUrl(fileName);
 
-        // 3. Create memory and get the new row back
-        const { data: memory, error: insertError } = await supabase
+
+      /* --------------------------------
+        2. Create memory
+      -------------------------------- */
+
+      const { data: memory, error: insertError } = await supabase
         .from("memories")
         .insert({
-            title,
-            description,
-            memory_date: date || null,
-            image_url: publicUrl,
+          title,
+          description,
+          memory_date: date || null,
+          image_url: publicUrl,
+          status: "processing",
         })
         .select()
         .single();
 
-        if (insertError) {
+      if (insertError) {
         throw insertError;
+      }
+
+      if (!memory) {
+        throw new Error("Memory was not created.");
+      }
+
+
+      /* --------------------------------
+        3. Tell user we're processing
+      -------------------------------- */
+
+      setProcessing(true);
+      setLoading(false);
+      setMessage("The curator is preparing your memory...");
+
+
+      /* --------------------------------
+        4. Wait for n8n
+      -------------------------------- */
+
+      const memoryId = memory.id;
+
+      const checkStatus = async () => {
+        const { data, error } = await supabase
+          .from("memories")
+          .select("status")
+          .eq("id", memoryId)
+          .single();
+
+        if (error) {
+          console.error("Status check error:", error);
+          return;
         }
 
-
-        // 4. Trigger Memento's AI curator
-        const n8nResponse = await fetch(
-        "https://kami23.app.n8n.cloud/webhook/memento-memory",
-        {
+        const response = await fetch(
+          "https://kami23.app.n8n.cloud/webhook/memento-memory",
+          {
             method: "POST",
             headers: {
-            "Content-Type": "application/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
-            memory_id: memory.id,
-            title: memory.title,
-            description: memory.description,
-            date: memory.memory_date,
-            }),
-        }
+              memory_id: memory.id,
+              title,
+              description,
+              date: date || null,
+              image_url: publicUrl,
+              }),
+          }
         );
 
-        if (!n8nResponse.ok) {
-        throw new Error("Failed to trigger AI curator.");
+        if (!response.ok) {
+          throw new Error("Failed to trigger memory processing.");
         }
 
-        // 5. Reset form
-        setMessage("Memory added to your archive ✨");
-
-        setTitle("");
-        setDescription("");
-        setDate("");
-        setImage(null);
-
-        const fileInput = document.getElementById(
-        "image"
-        ) as HTMLInputElement;
-
-        if (fileInput) {
-        fileInput.value = "";
+        if (data?.status === "ready") {
+          setProcessing(false);
+          setCompletedMemoryId(memoryId);
+          setMessage("Your memory has been preserved.");
+          return;
         }
+
+        setTimeout(checkStatus, 2000);
+      };
+
+      checkStatus();
+
     } catch (error) {
-        console.error(error);
-        setMessage("Something went wrong. Check the console.");
-    } finally {
-        setLoading(false);
-        clearTimeout(stepTimer1);
-        clearTimeout(stepTimer2);
-        clearTimeout(stepTimer3);
+      console.error(error);
+
+      setLoading(false);
+      setMessage("Something went wrong. Check the console.");
     }
   }
 
   return (
+    
+    
     <main className="create-page">
 
       <header className="create-header">
@@ -302,7 +323,7 @@ export default function CreatePage() {
 
         <section className="preserve-section">
 
-          {loading ? (
+          {loading || processing ? (
 
             <div className="preserving">
 
@@ -314,33 +335,14 @@ export default function CreatePage() {
                 <span></span>
               </div>
 
-              <div className="preserving-steps">
 
-                <div className={processingStep >= 1 ? "active" : ""}>
-                  <span>01</span>
-                  Uploading photograph
-                </div>
-
-                <div className={processingStep >= 2 ? "active" : ""}>
-                  <span>02</span>
-                  Finding its place
-                </div>
-
-                <div className={processingStep >= 3 ? "active" : ""}>
-                  <span>03</span>
-                  Writing its story
-                </div>
-
-                <div className={processingStep >= 4 ? "active" : ""}>
-                  <span>04</span>
-                  Adding it to the archive
-                </div>
-
-              </div>
+              <p className="processing-message">
+                The curator is preparing your exhibition...
+              </p>
 
             </div>
 
-          ) : message ? (
+          ) : completedMemoryId ? (
 
             <div className="preserved">
 
@@ -353,15 +355,30 @@ export default function CreatePage() {
               </h2>
 
               <p>
-                Your exhibit has been added to Memento.
+                Your exhibit has been prepared and added
+                to the archive.
               </p>
 
               <a
-                href="/museum"
+                href={`/memory/${completedMemoryId}`}
                 className="museum-entry-button"
               >
-                Enter the museum →
+                Enter your exhibition →
               </a>
+
+            </div>
+
+          ) : message ? (
+
+            <div className="preserved">
+
+              <p className="preserving-eyebrow">
+                SOMETHING WENT WRONG
+              </p>
+
+              <p>
+                {message}
+              </p>
 
             </div>
 
