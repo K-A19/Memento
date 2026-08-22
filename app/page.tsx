@@ -14,9 +14,12 @@ export default function Home() {
           Some moments deserve to stay.
         </p>
 
-        <button className="mt-10 px-8 py-4 border border-[#f2efe8]/30 rounded-full hover:bg-[#f2efe8] hover:text-[#0d0d0c] transition-all duration-300">
+        <a
+          href="/create"
+          className="inline-block mt-10 px-8 py-4 border border-[#f2efe8]/30 rounded-full hover:bg-[#f2efe8] hover:text-[#0d0d0c] transition-all duration-300"
+        >
           Create your exhibition
-        </button>
+        </a>
       </div>
     </main>
   );
