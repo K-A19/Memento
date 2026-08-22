@@ -167,6 +167,23 @@ export default function MemoryPage() {
               "The curator has not written a note for this memory yet."}
           </p>
 
+          <div className="memory-audio">
+
+            <button
+              type="button"
+              disabled
+              className="audio-button"
+            >
+              <span>▶</span>
+              Listen to the curator
+            </button>
+
+            <p>
+              Curator narration coming soon.
+            </p>
+
+          </div>
+
         </div>
 
 
@@ -196,25 +213,6 @@ export default function MemoryPage() {
 
         )}
 
-
-        {/* AUDIO — COMING LATER */}
-
-        <div className="memory-audio">
-
-          <button
-            type="button"
-            disabled
-            className="audio-button"
-          >
-            <span>▶</span>
-            Listen to the curator
-          </button>
-
-          <p>
-            Curator narration coming soon.
-          </p>
-
-        </div>
 
       </section>
 

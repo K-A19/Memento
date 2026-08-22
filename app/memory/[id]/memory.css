@@ -1,30 +1,48 @@
+/* =========================================================
+   MEMENTO — INDIVIDUAL MEMORY
+========================================================= */
+
 .memory-exhibit {
   min-height: 100vh;
   background: var(--black);
   color: var(--white);
-  padding: 28px 5vw 80px;
+  padding: 28px 5vw 90px;
 }
 
-/* HEADER */
+
+/* =========================================================
+   HEADER
+========================================================= */
 
 .memory-header {
+  max-width: 1100px;
+  margin: 0 auto;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding-bottom: 22px;
   border-bottom: 1px solid var(--border);
 }
 
 .memory-logo {
+  color: var(--white);
+  text-decoration: none;
+
   font-size: 11px;
   letter-spacing: 0.28em;
 }
 
 .memory-back {
-  font-size: 9px;
-  letter-spacing: 0.12em;
   color: var(--muted);
-  transition: color 0.2s ease;
+  text-decoration: none;
+
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+
+  transition: color 0.25s ease;
 }
 
 .memory-back:hover {
@@ -32,192 +50,272 @@
 }
 
 
-/* TITLE */
+/* =========================================================
+   TITLE
+========================================================= */
 
 .memory-intro {
   max-width: 950px;
-  margin: 100px auto 60px;
+  margin: 60px auto 65px;
 }
 
 .memory-eyebrow {
+  margin: 0 0 22px;
+
   font-size: 8px;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   color: var(--muted);
-  margin-bottom: 18px;
 }
 
 .memory-intro h1 {
+  max-width: 900px;
+
+  margin: 0;
+
   font-family: var(--font-cormorant), serif;
   font-size: clamp(60px, 9vw, 120px);
   font-weight: 400;
-  line-height: 0.85;
-  letter-spacing: -0.035em;
-  margin: 0;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
 }
 
 .memory-date {
-  margin-top: 22px;
+  margin: 28px 0 0;
+
   font-size: 9px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   color: var(--muted);
 }
 
 
-/* IMAGE */
+/* =========================================================
+   MAIN IMAGE
+========================================================= */
 
 .memory-image-section {
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
 .memory-main-image {
-  display: block;
   width: 100%;
-  max-height: 720px;
+  max-height: 550px;
+
+  display: block;
+
   object-fit: cover;
+  object-position: center;
+
+  background: var(--black-soft);
 }
 
 
-/* DETAILS */
+/* =========================================================
+   DETAILS
+========================================================= */
 
 .memory-details {
   max-width: 950px;
-  margin: 90px auto 0;
+  margin: 85px auto 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  column-gap: 100px;
+  row-gap: 65px;
 }
 
 .detail-label {
   display: block;
-  font-size: 8px;
-  letter-spacing: 0.22em;
+
+  margin-bottom: 10px;
+
+  font-size: 11px;
+  letter-spacing: 0.2em;
   color: var(--muted);
-  margin-bottom: 18px;
 }
 
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
 .memory-description {
-  max-width: 600px;
+  grid-column: 1;
 }
 
 .memory-description p {
-  font-family: var(--font-cormorant), serif;
-  font-size: 23px;
-  line-height: 1.4;
   margin: 0;
+
+  font-family: var(--font-cormorant), serif;
+  font-size: 25px;
+  line-height: 1.3;
 }
 
 
-/* CURATOR */
+/* =========================================================
+   CURATOR
+========================================================= */
 
 .curator-section {
-  max-width: 700px;
-  margin: 90px auto;
-  padding: 55px 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  grid-column: 2;
 }
 
 .curator-text {
-  font-family: var(--font-cormorant), serif;
-  font-size: 27px;
-  line-height: 1.4;
-  font-style: italic;
   margin: 0;
+
+  max-width: 600px;
+
+  font-family: var(--font-cormorant), serif;
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.45;
+
+  color: var(--white);
 }
 
 
-/* THEMES */
+/* =========================================================
+   THEMES
+========================================================= */
 
 .memory-themes {
-  margin-top: 70px;
+  grid-column: 1 / -1;
+
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
 }
 
 .theme-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px;
 }
 
 .theme {
+  display: inline-block;
+
+  padding: 8px 13px;
+
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 9px;
+
+  font-size: 10px;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+
   color: var(--muted);
 }
 
 
-/* AUDIO */
+/* =========================================================
+   AUDIO
+========================================================= */
 
 .memory-audio {
-  margin-top: 90px;
-  text-align: center;
+  margin-top: 28px;
 }
 
 .audio-button {
-  padding: 13px 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 20px;
+
   border: 1px solid var(--border);
   border-radius: 999px;
+
   background: transparent;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  color: var(--white);
+
+  font-family: inherit;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+
+  cursor: not-allowed;
+  opacity: 0.65;
+
+  transition: all 0.25s ease;
 }
 
 .audio-button span {
-  margin-right: 8px;
-}
-
-.audio-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
+  font-size: 8px;
 }
 
 .memory-audio p {
-  margin-top: 12px;
+  margin: 10px 0 0;
+
   font-size: 8px;
+  letter-spacing: 0.08em;
   color: var(--muted);
 }
 
 
-/* FOOTER */
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .memory-footer {
   max-width: 950px;
-  margin: 120px auto 0;
+
+  margin: 100px auto 0;
   padding-top: 25px;
+
   border-top: 1px solid var(--border);
 }
 
 .memory-footer a {
+  color: var(--muted);
+  text-decoration: none;
+
   font-size: 9px;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  text-transform: uppercase;
+
+  transition: color 0.25s ease;
+}
+
+.memory-footer a:hover {
+  color: var(--white);
 }
 
 
-/* LOADING */
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
 
 .memory-loading {
   min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   background: var(--black);
   color: var(--muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   font-family: var(--font-cormorant), serif;
   font-size: 20px;
+
+  text-align: center;
 }
 
 .memory-loading a {
-  display: block;
+  display: inline-block;
+
   margin-top: 20px;
-  font-family: var(--font-inter), sans-serif;
-  font-size: 9px;
-  color: var(--muted);
+
+  color: var(--white);
+  text-decoration: none;
+
+  font-family: inherit;
+  font-size: 12px;
 }
 
 
-/* MOBILE */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
 
@@ -225,38 +323,97 @@
     padding: 22px 20px 60px;
   }
 
+  .memory-header {
+    padding-bottom: 18px;
+  }
+
+  .memory-logo {
+    font-size: 9px;
+  }
+
+  .memory-back {
+    font-size: 7px;
+  }
+
+
+  /* TITLE */
+
   .memory-intro {
-    margin: 70px auto 45px;
+    margin: 65px auto 50px;
   }
 
   .memory-intro h1 {
     font-size: 62px;
+    line-height: 0.88;
   }
 
+  .memory-date {
+    margin-top: 22px;
+  }
+
+
+  /* IMAGE */
+
   .memory-image-section {
+    width: calc(100% + 40px);
     margin-left: -20px;
-    margin-right: -20px;
   }
 
   .memory-main-image {
-    max-height: 500px;
+    width: 100%;
+    max-height: 600px;
+
+    aspect-ratio: 4 / 5;
   }
+
+
+  /* DETAILS */
 
   .memory-details {
     margin-top: 60px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 50px;
   }
 
-  .curator-section {
-    margin: 65px auto;
-    padding: 40px 0;
+  .memory-description p {
+    font-size: 22px;
   }
 
   .curator-text {
-    font-size: 23px;
+    font-size: 22px;
+  }
+
+  .memory-themes {
+    padding-top: 25px;
   }
 
   .memory-audio {
-    margin-top: 65px;
+    padding-top: 25px;
+  }
+
+  .memory-footer {
+    margin-top: 75px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .memory-intro h1 {
+    font-size: 52px;
+  }
+
+  .memory-description p,
+  .curator-text {
+    font-size: 20px;
   }
 
 }
