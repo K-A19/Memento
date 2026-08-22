@@ -420,9 +420,12 @@ function MuseumPageContent() {
 
               )}
 
-              <button className="view-memory">
+              <Link
+                href={`/memory/${featuredMemory.id}`}
+                className="view-memory"
+              >
                 View memory →
-              </button>
+              </Link>
 
             </div>
 
