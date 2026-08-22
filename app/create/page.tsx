@@ -11,6 +11,7 @@ export default function CreatePage() {
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [processingStep, setProcessingStep] = useState(0);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,6 +37,7 @@ export default function CreatePage() {
         throw uploadError;
         }
 
+
         // 2. Get public image URL
         const {
         data: { publicUrl },
@@ -58,6 +60,7 @@ export default function CreatePage() {
         if (insertError) {
         throw insertError;
         }
+
 
         // 4. Trigger Memento's AI curator
         const n8nResponse = await fetch(
@@ -104,98 +107,269 @@ export default function CreatePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0d0d0c] text-[#f2efe8] px-6 py-16">
-      <div className="max-w-2xl mx-auto">
+    <main className="create-page">
 
-        <p className="text-sm tracking-[0.35em] uppercase text-[#a9a398]">
-          Memento
+      <header className="create-header">
+        <a href="/" className="create-logo">
+          MEMENTO
+        </a>
+
+        <a href="/museum" className="create-museum-link">
+          Enter the museum →
+        </a>
+      </header>
+
+
+      <section className="create-intro">
+
+        <p className="create-eyebrow">
+          PRESERVE A MEMORY
         </p>
 
-        <h1 className="mt-4 text-5xl font-serif">
-          Add a memory.
+        <h1>
+          Every exhibition
+          <br />
+          begins with a moment.
         </h1>
 
-        <p className="mt-4 text-[#a9a398]">
-          Give a moment a place in your archive.
+        <p className="create-subtitle">
+          Give us the details. We'll take care of
+          the rest.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-12 space-y-8">
+      </section>
 
-          <div>
-            <label className="block mb-3 text-sm">
-              Photograph
-            </label>
 
-            <input
-              id="image"
-              type="file"
-              accept="image/*"
-              onChange={(e) =>
-                setImage(e.target.files?.[0] || null)
-              }
-              className="block w-full text-sm text-[#a9a398]"
-            />
+      <form
+        onSubmit={handleSubmit}
+        className="memory-form"
+      >
+
+        {/* PHOTO */}
+
+        <section className="form-section">
+
+          <div className="form-label">
+            <span>01</span>
+            PHOTOGRAPH
           </div>
 
-          <div>
-            <label className="block mb-3 text-sm">
-              Title
-            </label>
-
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Summer at the beach"
-              className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-3 text-sm">
-              Date
-            </label>
-
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="bg-transparent border-b border-white/20 py-3 outline-none"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-3 text-sm">
-              Tell us about this moment
-            </label>
-
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="What do you remember?"
-              rows={5}
-              className="w-full bg-transparent border border-white/20 p-4 rounded-lg outline-none focus:border-white transition resize-none"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-4 rounded-full bg-[#f2efe8] text-[#0d0d0c] hover:opacity-90 transition disabled:opacity-50"
+          <label
+            htmlFor="image"
+            className={`image-upload ${
+              image ? "has-image" : ""
+            }`}
           >
-            {loading
-              ? "Preserving your memory..."
-              : "Add to my exhibition"}
-          </button>
 
-          {message && (
-            <p className="text-center text-sm text-[#a9a398]">
-              {message}
-            </p>
+            {image ? (
+              <div className="image-preview">
+
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Memory preview"
+                />
+
+                <div className="image-overlay">
+                  Change photograph
+                </div>
+
+              </div>
+            ) : (
+              <div className="upload-empty">
+
+                <span className="upload-symbol">
+                  +
+                </span>
+
+                <span>
+                  Add a photograph
+                </span>
+
+                <small>
+                  JPG, PNG or WEBP
+                </small>
+
+              </div>
+            )}
+
+          </label>
+
+          <input
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setImage(
+                e.target.files?.[0] || null
+              )
+            }
+            hidden
+          />
+
+        </section>
+
+
+        {/* DETAILS */}
+
+        <section className="form-section">
+
+          <div className="form-label">
+            <span>02</span>
+            THE MOMENT
+          </div>
+
+          <div className="form-fields">
+
+            <div className="field">
+
+              <label htmlFor="title">
+                What would you call this moment?
+              </label>
+
+              <input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) =>
+                  setTitle(e.target.value)
+                }
+                placeholder="Graduation"
+                required
+              />
+
+            </div>
+
+
+            <div className="field">
+
+              <label htmlFor="date">
+                When did it happen?
+              </label>
+
+              <input
+                id="date"
+                type="date"
+                value={date}
+                onChange={(e) =>
+                  setDate(e.target.value)
+                }
+              />
+
+            </div>
+
+
+            <div className="field field-large">
+
+              <label htmlFor="description">
+                Tell us what happened.
+              </label>
+
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) =>
+                  setDescription(e.target.value)
+                }
+                placeholder="I had just finished my final exams..."
+                rows={5}
+              />
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* SUBMIT */}
+
+        <section className="preserve-section">
+
+          {loading ? (
+
+            <div className="preserving">
+
+              <p className="preserving-eyebrow">
+                PRESERVING YOUR MEMORY
+              </p>
+
+              <div className="preserving-loader">
+                <span></span>
+              </div>
+
+              <div className="preserving-steps">
+
+                <div className={processingStep >= 1 ? "active" : ""}>
+                  <span>01</span>
+                  Uploading photograph
+                </div>
+
+                <div className={processingStep >= 2 ? "active" : ""}>
+                  <span>02</span>
+                  Finding its place
+                </div>
+
+                <div className={processingStep >= 3 ? "active" : ""}>
+                  <span>03</span>
+                  Writing its story
+                </div>
+
+                <div className={processingStep >= 4 ? "active" : ""}>
+                  <span>04</span>
+                  Adding it to the archive
+                </div>
+
+              </div>
+
+            </div>
+
+          ) : message ? (
+
+            <div className="preserved">
+
+              <p className="preserving-eyebrow">
+                MEMORY PRESERVED
+              </p>
+
+              <h2>
+                {title}
+              </h2>
+
+              <p>
+                Your exhibit has been added to Memento.
+              </p>
+
+              <a
+                href="/museum"
+                className="museum-entry-button"
+              >
+                Enter the museum →
+              </a>
+
+            </div>
+
+          ) : (
+
+            <button
+              type="submit"
+              className="preserve-button"
+              disabled={loading}
+            >
+              Preserve this memory →
+            </button>
+
           )}
 
-        </form>
-      </div>
+        </section>
+
+      </form>
+
+
+      <footer className="create-footer">
+        <span>MEMENTO</span>
+        <span>YOUR PRIVATE ARCHIVE</span>
+      </footer>
+
     </main>
   );
 }

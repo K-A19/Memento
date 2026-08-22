@@ -1,0 +1,420 @@
+.create-page {
+  min-height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  padding: 28px 5vw 60px;
+}
+
+
+/* HEADER */
+
+.create-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.create-logo {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+}
+
+.create-museum-link {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.create-museum-link:hover {
+  color: var(--white);
+}
+
+
+/* INTRO */
+
+.create-intro {
+  max-width: 850px;
+  margin: 90px auto 80px;
+}
+
+.create-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+
+.create-intro h1 {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(55px, 7vw, 90px);
+  line-height: 0.88;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.create-subtitle {
+  margin-top: 30px;
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--muted);
+}
+
+
+/* FORM */
+
+.memory-form {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.form-section {
+  padding: 55px 0;
+  border-top: 1px solid var(--border);
+}
+
+.form-label {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin-bottom: 35px;
+}
+
+.form-label span {
+  color: var(--white);
+}
+
+
+/* PHOTO */
+
+.image-upload {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  border: 1px dashed #45433e;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.image-upload:hover {
+  border-color: var(--muted);
+}
+
+.upload-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.upload-symbol {
+  font-family: var(--font-cormorant), serif;
+  font-size: 40px;
+  font-weight: 300;
+}
+
+.upload-empty span:not(.upload-symbol) {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.upload-empty small {
+  font-size: 8px;
+  color: #68655f;
+}
+
+.image-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 13, 12, 0.45);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.image-upload:hover .image-overlay {
+  opacity: 1;
+}
+
+
+/* FIELDS */
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field label {
+  font-family: var(--font-cormorant), serif;
+  font-size: 19px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #45433e;
+  background: transparent;
+  color: var(--white);
+  padding: 10px 0 14px;
+  outline: none;
+  font-size: 13px;
+  border-radius: 0;
+}
+
+.field textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--white);
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: #55524c;
+}
+
+
+/* DATE INPUT */
+
+.field input[type="date"] {
+  color-scheme: dark;
+}
+
+
+/* SUBMIT */
+
+.preserve-section {
+  padding: 65px 0 80px;
+  text-align: center;
+}
+
+.preserve-button {
+  padding: 15px 26px;
+  border: 1px solid #68645c;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.preserve-button:hover:not(:disabled) {
+  background: var(--white);
+  color: var(--black);
+}
+
+.preserve-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-message {
+  margin-top: 20px;
+  font-family: var(--font-cormorant), serif;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+
+/* FOOTER */
+
+.create-footer {
+  max-width: 850px;
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+  .create-page {
+    padding: 22px 20px 50px;
+  }
+
+  .create-museum-link {
+    display: none;
+  }
+
+  .create-intro {
+    margin: 65px auto 60px;
+  }
+
+  .create-intro h1 {
+    font-size: 58px;
+  }
+
+  .image-upload {
+    aspect-ratio: 4 / 3;
+  }
+
+  .form-section {
+    padding: 45px 0;
+  }
+
+  .create-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+}
+
+
+/* PRESERVING */
+
+.preserving {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.preserving-eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  color: var(--muted);
+}
+
+.preserving-loader {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #45433e;
+  border-top-color: var(--white);
+  border-radius: 50%;
+  margin: 35px auto 45px;
+  animation: memento-spin 1.2s linear infinite;
+}
+
+@keyframes memento-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.preserving-steps {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.preserving-steps div {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-cormorant), serif;
+  font-size: 17px;
+  color: #4f4c46;
+  transition:
+    color 0.5s ease,
+    opacity 0.5s ease;
+  opacity: 0.45;
+}
+
+.preserving-steps div.active {
+  color: var(--white);
+  opacity: 1;
+}
+
+.preserving-steps span {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+
+/* PRESERVED */
+
+.preserved {
+  text-align: center;
+  padding: 25px 0 15px;
+  animation: memento-fade-in 0.8s ease forwards;
+}
+
+.preserved h2 {
+  font-family: var(--font-cormorant), serif;
+  font-size: 55px;
+  font-weight: 400;
+  margin: 20px 0 10px;
+}
+
+.preserved > p:not(.preserving-eyebrow) {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--muted);
+}
+
+.museum-entry-button {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 14px 23px;
+  border: 1px solid #68645c;
+  border-radius: 999px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  transition: all 0.3s ease;
+}
+
+.museum-entry-button:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+@keyframes memento-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
