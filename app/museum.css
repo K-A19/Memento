@@ -28,6 +28,27 @@
   color: var(--muted);
 }
 
+.museum-header-right {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.preserve-link {
+  padding: 9px 15px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  transition: all 0.25s ease;
+}
+
+.preserve-link:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
 
 /* INTRO */
 
@@ -333,6 +354,20 @@
   .featured-info h2 {
     font-size: 42px;
   }
+
+  .museum-header-right {
+    gap: 12px;
+  }
+
+  .museum-meta {
+    display: none;
+  }
+
+  .preserve-link {
+    font-size: 7px;
+    padding: 8px 11px;
+  }
+
 }
 
 /* EXHIBITION PAGE */

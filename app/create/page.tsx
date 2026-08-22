@@ -23,6 +23,20 @@ export default function CreatePage() {
 
     setLoading(true);
     setMessage("");
+    
+    setProcessingStep(1);
+
+    const stepTimer1 = setTimeout(() => {
+      setProcessingStep(2);
+    }, 900);
+
+    const stepTimer2 = setTimeout(() => {
+      setProcessingStep(3);
+    }, 1800);
+
+    const stepTimer3 = setTimeout(() => {
+      setProcessingStep(4);
+    }, 2700);
 
     try {
         // 1. Upload image
@@ -103,6 +117,9 @@ export default function CreatePage() {
         setMessage("Something went wrong. Check the console.");
     } finally {
         setLoading(false);
+        clearTimeout(stepTimer1);
+        clearTimeout(stepTimer2);
+        clearTimeout(stepTimer3);
     }
   }
 

@@ -67,14 +67,25 @@ function ExhibitionView({
 
         <header className="museum-header">
 
-            <Link href="/museum" className="museum-logo">
+          <Link href="/museum" className="museum-logo">
             MEMENTO
+          </Link>
+
+          <div className="museum-header-right">
+
+            <Link
+              href="/create"
+              className="preserve-link"
+            >
+              Preserve a memory
             </Link>
 
             <div className="museum-meta">
-            <span>PRIVATE ARCHIVE</span>
-            <span>EXHIBITION {exhibition.number}</span>
+              <span>PRIVATE ARCHIVE</span>
+              <span>EXHIBITION {exhibition.number}</span>
             </div>
+
+          </div>
 
         </header>
 
@@ -234,16 +245,25 @@ export default function MuseumPage() {
       {/* HEADER */}
 
       <header className="museum-header">
+        <Link href="/museum" className="museum-logo">
+          MEMENTO
+        </Link>
 
-        <div>
-          <span className="museum-logo">MEMENTO</span>
+        <div className="museum-header-right">
+
+          <Link
+            href="/create"
+            className="preserve-link"
+          >
+            Preserve a memory
+          </Link>
+
+          <div className="museum-meta">
+            <span>PRIVATE ARCHIVE</span>
+            <span>THE MUSEUM OF YOU</span>
+          </div>
+
         </div>
-
-        <div className="museum-meta">
-          <span>PRIVATE ARCHIVE</span>
-          <span>EST. 2026</span>
-        </div>
-
       </header>
 
 
