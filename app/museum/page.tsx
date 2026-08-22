@@ -1,7 +1,12 @@
 "use client";
 
 import "../museum.css";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import {
+  useEffect,
+  useState,
+} from "react";
+import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 type Memory = {
@@ -38,9 +43,146 @@ const exhibitions = [
   },
 ];
 
+function ExhibitionView({
+    room,
+    memories,
+    }: {
+    room: string;
+    memories: Memory[];
+    }) {
+    const roomMemories = memories.filter(
+        (memory) => memory.room === room
+    );
+
+    const exhibition = exhibitions.find(
+        (item) => item.name === room
+    );
+
+    if (!exhibition) {
+        return null;
+    }
+
+    return (
+        <main className="museum exhibition-page">
+
+        <header className="museum-header">
+
+            <Link href="/museum" className="museum-logo">
+            MEMENTO
+            </Link>
+
+            <div className="museum-meta">
+            <span>PRIVATE ARCHIVE</span>
+            <span>EXHIBITION {exhibition.number}</span>
+            </div>
+
+        </header>
+
+        <section className="exhibition-intro">
+
+            <Link
+            href="/museum"
+            className="back-link"
+            >
+            ← The Museum
+            </Link>
+
+            <p className="museum-eyebrow">
+            EXHIBITION {exhibition.number}
+            </p>
+
+            <h1>
+            {exhibition.name}
+            </h1>
+
+            <p>
+            {exhibition.description}
+            </p>
+
+            <span className="exhibition-total">
+            {roomMemories.length}{" "}
+            {roomMemories.length === 1
+                ? "memory"
+                : "memories"}
+            </span>
+
+        </section>
+
+        <section className="memory-grid">
+
+            {roomMemories.map((memory) => (
+
+            <Link
+                key={memory.id}
+                href={`/memory/${memory.id}`}
+                className="memory-card"
+            >
+
+                {memory.image_url && (
+                <div className="memory-card-image">
+                    <img
+                    src={memory.image_url}
+                    alt={memory.title}
+                    />
+                </div>
+                )}
+
+                <div className="memory-card-info">
+
+                <span>
+                    {memory.memory_date
+                    ? new Date(
+                        memory.memory_date
+                        ).toLocaleDateString(
+                        "en-US",
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        }
+                        )
+                    : "Undated"}
+                </span>
+
+                <h2>{memory.title}</h2>
+
+                {memory.description && (
+                    <p>{memory.description}</p>
+                )}
+
+                </div>
+
+            </Link>
+
+            ))}
+
+        </section>
+
+        {roomMemories.length === 0 && (
+
+            <div className="empty-exhibition">
+
+            <p>
+                This room is waiting for its first memory.
+            </p>
+
+            <Link href="/create">
+                Preserve one →
+            </Link>
+
+            </div>
+
+        )}
+
+        </main>
+    );
+}
+
 export default function MuseumPage() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const room = searchParams.get("room");
 
   useEffect(() => {
     async function loadMemories() {
@@ -76,6 +218,15 @@ export default function MuseumPage() {
       </main>
     );
   }
+
+  if (room) {
+    return (
+        <ExhibitionView
+        room={room}
+        memories={memories}
+        />
+    );
+    }
 
   return (
     <main className="museum">
@@ -154,38 +305,31 @@ export default function MuseumPage() {
 
           {exhibitions.map((exhibition) => (
 
-            <button
-              key={exhibition.name}
-              className="exhibition"
-            >
+            <Link
+                key={exhibition.name}
+                href={`/museum?room=${encodeURIComponent(exhibition.name)}`}
+                className="exhibition"
+                >
+                <span className="exhibition-number">
+                    {exhibition.number}
+                </span>
 
-              <span className="exhibition-number">
-                {exhibition.number}
-              </span>
+                <div className="exhibition-info">
+                    <h3>{exhibition.name}</h3>
 
-              <div className="exhibition-info">
+                    <p>{exhibition.description}</p>
+                </div>
 
-                <h3>
-                  {exhibition.name}
-                </h3>
+                <span className="exhibition-count">
+                    {String(
+                    getRoomCount(exhibition.name)
+                    ).padStart(2, "0")}
+                </span>
 
-                <p>
-                  {exhibition.description}
-                </p>
-
-              </div>
-
-              <span className="exhibition-count">
-                {String(
-                  getRoomCount(exhibition.name)
-                ).padStart(2, "0")}
-              </span>
-
-              <span className="exhibition-arrow">
-                →
-              </span>
-
-            </button>
+                <span className="exhibition-arrow">
+                    →
+                </span>
+            </Link>
 
           ))}
 
