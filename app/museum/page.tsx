@@ -201,7 +201,7 @@ function MuseumPageContent() {
       const { data, error } = await supabase
         .from("memories")
         .select("*")
-        .order("memory_date", { ascending: false });
+        .order("created_at", { ascending: false });
 
       if (error) {
         console.error("Error loading memories:", error);
