@@ -1,25 +1,40 @@
+import "./home.css";
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0d0d0c] text-[#f2efe8] flex items-center justify-center">
-      <div className="text-center">
-        <p className="text-sm tracking-[0.4em] uppercase text-[#a9a398] mb-6">
-          An archive of your life
+    <main className="home">
+      <nav className="home-nav">
+        <span>MEMENTO</span>
+        <span>PRIVATE ARCHIVE</span>
+      </nav>
+
+      <section className="hero">
+        <p className="hero-eyebrow">
+          YOUR LIFE IS AN EXHIBITION
         </p>
 
-        <h1 className="text-7xl font-serif tracking-tight">
+        <h1>
           Memento
         </h1>
 
-        <p className="mt-6 text-xl text-[#b8b3aa]">
+        <p className="hero-tagline">
           Some moments deserve to stay.
         </p>
 
-        <a
-          href="/create"
-          className="inline-block mt-10 px-8 py-4 border border-[#f2efe8]/30 rounded-full hover:bg-[#f2efe8] hover:text-[#0d0d0c] transition-all duration-300"
-        >
-          Create your exhibition
-        </a>
+        <div className="hero-actions">
+          <a href="/create" className="primary-button">
+            Preserve a Memory
+          </a>
+
+          <a href="/museum" className="secondary-button">
+            Enter the Museum
+          </a>
+        </div>
+      </section>
+
+      <div className="hero-footer">
+        <span>EST. 2026</span>
+        <span>PERSONAL COLLECTION</span>
       </div>
     </main>
   );
