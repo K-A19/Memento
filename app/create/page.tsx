@@ -15,63 +15,90 @@ export default function CreatePage() {
     e.preventDefault();
 
     if (!image || !title) {
-      setMessage("Please add a photo and title.");
-      return;
+        setMessage("Please add a photo and title.");
+        return;
     }
 
     setLoading(true);
     setMessage("");
 
     try {
-      const fileExtension = image.name.split(".").pop();
-      const fileName = `${crypto.randomUUID()}.${fileExtension}`;
+        // 1. Upload image
+        const fileExtension = image.name.split(".").pop();
+        const fileName = `${crypto.randomUUID()}.${fileExtension}`;
 
-      const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
         .from("memories")
         .upload(fileName, image);
 
-      if (uploadError) {
+        if (uploadError) {
         throw uploadError;
-      }
+        }
 
-      const {
+        // 2. Get public image URL
+        const {
         data: { publicUrl },
-      } = supabase.storage
+        } = supabase.storage
         .from("memories")
         .getPublicUrl(fileName);
 
-      const { error: insertError } = await supabase
+        // 3. Create memory and get the new row back
+        const { data: memory, error: insertError } = await supabase
         .from("memories")
         .insert({
-          title,
-          description,
-          memory_date: date || null,
-          image_url: publicUrl,
-        });
+            title,
+            description,
+            memory_date: date || null,
+            image_url: publicUrl,
+        })
+        .select()
+        .single();
 
-      if (insertError) {
+        if (insertError) {
         throw insertError;
-      }
+        }
 
-      setMessage("Memory added to your archive ✨");
+        // 4. Trigger Memento's AI curator
+        const n8nResponse = await fetch(
+        "https://kami23.app.n8n.cloud/webhook/memento-memory",
+        {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            memory_id: memory.id,
+            title: memory.title,
+            description: memory.description,
+            date: memory.memory_date,
+            }),
+        }
+        );
 
-      setTitle("");
-      setDescription("");
-      setDate("");
-      setImage(null);
+        if (!n8nResponse.ok) {
+        throw new Error("Failed to trigger AI curator.");
+        }
 
-      const fileInput = document.getElementById(
+        // 5. Reset form
+        setMessage("Memory added to your archive ✨");
+
+        setTitle("");
+        setDescription("");
+        setDate("");
+        setImage(null);
+
+        const fileInput = document.getElementById(
         "image"
-      ) as HTMLInputElement;
+        ) as HTMLInputElement;
 
-      if (fileInput) {
+        if (fileInput) {
         fileInput.value = "";
-      }
+        }
     } catch (error) {
-      console.error(error);
-      setMessage("Something went wrong. Check the console.");
+        console.error(error);
+        setMessage("Something went wrong. Check the console.");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   }
 
