@@ -14,6 +14,29 @@ type Memory = {
   curator_script: string | null;
 };
 
+const exhibitions = [
+  {
+    number: "01",
+    name: "The Beginnings",
+    description: "Firsts, new chapters, and moments of becoming.",
+  },
+  {
+    number: "02",
+    name: "The People",
+    description: "The people who made the moments matter.",
+  },
+  {
+    number: "03",
+    name: "The Places",
+    description: "Places that became part of your story.",
+  },
+  {
+    number: "04",
+    name: "Everything In Between",
+    description: "The moments that don't fit neatly anywhere.",
+  },
+];
+
 export default function MuseumPage() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,47 +60,181 @@ export default function MuseumPage() {
     loadMemories();
   }, []);
 
+  const getRoomCount = (room: string) => {
+    return memories.filter((memory) => memory.room === room).length;
+  };
+
+  const featuredMemory = memories[0];
+
   if (loading) {
     return (
-      <main className="museum-page">
-        <p>Preparing your exhibition...</p>
+      <main className="museum">
+        <div className="museum-loading">
+          <p>Preparing your museum...</p>
+        </div>
       </main>
     );
   }
 
   return (
-    <main className="museum-page">
+    <main className="museum">
+
+      {/* HEADER */}
+
       <header className="museum-header">
-        <p className="eyebrow">MEMENTO</p>
 
-        <h1>Your Museum</h1>
+        <div>
+          <span className="museum-logo">MEMENTO</span>
+        </div>
 
-        <p className="museum-subtitle">
-          A collection of moments worth remembering.
-        </p>
+        <div className="museum-meta">
+          <span>PRIVATE ARCHIVE</span>
+          <span>EST. 2026</span>
+        </div>
+
       </header>
 
-      <section className="museum-grid">
-        {memories.map((memory) => (
-          <article key={memory.id} className="memory-card">
-            {memory.image_url && (
-              <img
-                src={memory.image_url}
-                alt={memory.title}
-                className="memory-image"
-              />
+
+      {/* INTRO */}
+
+      <section className="museum-intro">
+
+        <p className="museum-eyebrow">
+          YOUR COLLECTION
+        </p>
+
+        <h1>
+          The Museum
+          <br />
+          <em>of You.</em>
+        </h1>
+
+        <p className="museum-description">
+          A collection of moments worth remembering.
+        </p>
+
+        <div className="museum-stats">
+
+          <div>
+            <strong>{memories.length}</strong>
+            <span>MEMORIES</span>
+          </div>
+
+          <div>
+            <strong>04</strong>
+            <span>EXHIBITIONS</span>
+          </div>
+
+          <div>
+            <strong>
+              {memories.length > 0
+                ? new Date(
+                    memories[memories.length - 1].memory_date || ""
+                  ).getFullYear()
+                : "—"}
+            </strong>
+            <span>EARLIEST</span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* EXHIBITIONS */}
+
+      <section className="exhibitions">
+
+        <div className="section-heading">
+          <h2>Exhibitions</h2>
+        </div>
+
+        <div className="exhibition-list">
+
+          {exhibitions.map((exhibition) => (
+
+            <button
+              key={exhibition.name}
+              className="exhibition"
+            >
+
+              <span className="exhibition-number">
+                {exhibition.number}
+              </span>
+
+              <div className="exhibition-info">
+
+                <h3>
+                  {exhibition.name}
+                </h3>
+
+                <p>
+                  {exhibition.description}
+                </p>
+
+              </div>
+
+              <span className="exhibition-count">
+                {String(
+                  getRoomCount(exhibition.name)
+                ).padStart(2, "0")}
+              </span>
+
+              <span className="exhibition-arrow">
+                →
+              </span>
+
+            </button>
+
+          ))}
+
+        </div>
+
+      </section>
+
+
+      {/* FEATURED MEMORY */}
+
+      {featuredMemory && (
+
+        <section className="featured">
+
+          <div className="section-heading">
+            <h2>Recently Preserved</h2>
+          </div>
+
+          <div className="featured-memory">
+
+            {featuredMemory.image_url && (
+
+              <div className="featured-image-wrapper">
+
+                <img
+                  src={featuredMemory.image_url}
+                  alt={featuredMemory.title}
+                  className="featured-image"
+                />
+
+              </div>
+
             )}
 
-            <div className="memory-content">
-              <p className="memory-room">
-                {memory.room || "Uncurated"}
+            <div className="featured-info">
+
+              <p className="featured-room">
+                {featuredMemory.room || "UNCURATED"}
               </p>
 
-              <h2>{memory.title}</h2>
+              <h2>
+                {featuredMemory.title}
+              </h2>
 
-              {memory.memory_date && (
-                <p className="memory-date">
-                  {new Date(memory.memory_date).toLocaleDateString(
+              {featuredMemory.memory_date && (
+
+                <p className="featured-date">
+                  {new Date(
+                    featuredMemory.memory_date
+                  ).toLocaleDateString(
                     "en-US",
                     {
                       year: "numeric",
@@ -86,32 +243,29 @@ export default function MuseumPage() {
                     }
                   )}
                 </p>
+
               )}
 
-              {memory.themes && memory.themes.length > 0 && (
-                <div className="memory-themes">
-                  {memory.themes.map((theme) => (
-                    <span key={theme}>{theme}</span>
-                  ))}
-                </div>
-              )}
+              {featuredMemory.curator_script && (
 
-              {memory.curator_script && (
-                <p className="curator-script">
-                  {memory.curator_script}
+                <p className="featured-script">
+                  {featuredMemory.curator_script}
                 </p>
-              )}
-            </div>
-          </article>
-        ))}
-      </section>
 
-      {memories.length === 0 && (
-        <div className="empty-museum">
-          <h2>Your museum is waiting.</h2>
-          <p>Create your first memory to begin your collection.</p>
-        </div>
+              )}
+
+              <button className="view-memory">
+                View memory →
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
       )}
+
     </main>
   );
 }
