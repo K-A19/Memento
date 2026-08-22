@@ -3,6 +3,7 @@
 import "../museum.css";
 import Link from "next/link";
 import {
+  Suspense,
   useEffect,
   useState,
 } from "react";
@@ -189,7 +190,7 @@ function ExhibitionView({
     );
 }
 
-export default function MuseumPage() {
+function MuseumPageContent() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -432,5 +433,13 @@ export default function MuseumPage() {
       )}
 
     </main>
+  );
+}
+
+export default function MuseumPage() {
+  return (
+    <Suspense fallback={null}>
+      <MuseumPageContent />
+    </Suspense>
   );
 }
